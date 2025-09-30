@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Losowanie nazwisk</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>✩₊˚.⋆☾⋆⁺₊✧ Losowanie nazwisk ✩₊˚.⋆☾⋆⁺₊✧</h1>
+
+    <div style="display: flex; gap: 20px;">
+      <button id="getname" class="btn">Losuj</button>
+      <div id="wynik" class="output">---</div>
+    </div>
+
+    <div>
+      <h2>Aktualna tablica (pozostale):</h2>
+      <ul id="pozostale"></ul>
+
+      <h2>Wylosowane pary:</h2>
+      <ul id="historia"></ul>
+    </div>
+  </div>
+
+  <script>
+    const nazwiska = [
+      "Kowalski", "Nowak", "Wiśniewski", "Wójcik", "Kaczmarek",
+      "Mazur", "Krawczyk", "Piotrowski", "Grabowski", "Zieliński",
+      "Szymański", "Woźniak", "Dąbrowski", "Lewandowski", "Zawadzki",
+      "Bąk", "Sikora", "Król", "Baran", "Górski"
+    ];
+
+    let pozostale = [...nazwiska];
+
+    function losujElement(tablica) {
+      return tablica[parseInt(Math.random() * tablica.length)];
+    }
+
+    function pokazTablice(id, tablica) {
+      const ul = document.getElementById(id);
+      ul.innerHTML = "";
+      for (const nazwisko of tablica) {
+        const li = document.createElement("li");
+        li.textContent = nazwisko;
+        ul.appendChild(li);
+      }
+    }
+
+    document.getElementById("getname").onclick = () => {
+      if (pozostale.length < 2) {
+        document.getElementById("wynik").innerHTML = "Brak wystarczającej liczby nazwisk";
+        return;
+      }
+
+      const pierwsze = losujElement(pozostale);
+      pozostale = pozostale.filter(n => n !== pierwsze);
+
+      const drugie = losujElement(pozostale);
+      pozostale = pozostale.filter(n => n !== drugie);
+
+      const para = `${pierwsze}, ${drugie}`;
+      document.getElementById("wynik").innerHTML = para;
+
+      const li = document.createElement("li");
+      li.textContent = para;
+      document.getElementById("historia").appendChild(li);
+
+      pokazTablice("pozostale", pozostale);
+    };
+
+    pokazTablice("pozostale", pozostale);
+  </script>
+</body>
+</html>
